@@ -8,13 +8,16 @@ import android.os.IBinder;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 public class FloatingWindow extends Service{
 
     private WindowManager wm;
     private LinearLayout ll;
+    private Button btnStop;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -27,14 +30,22 @@ public class FloatingWindow extends Service{
 
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         ll = new LinearLayout(this);
+        btnStop = new Button(this);
+
+        ViewGroup.LayoutParams blParams = new ViewGroup.LayoutParams(
+                                                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                    ViewGroup.LayoutParams.WRAP_CONTENT );
+        btnStop.setText("Stop");
+        btnStop.setLayoutParams(blParams);
+
         LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(
                                                     LinearLayout.LayoutParams.MATCH_PARENT,
                                                      LinearLayout.LayoutParams.MATCH_PARENT);
-        ll.setBackgroundColor(Color.argb(128, 255, 0, 0));
+        ll.setBackgroundColor(Color.argb(64, 152, 255, 152));
         ll.setLayoutParams(llParams);
 
         final WindowManager.LayoutParams wlparams = new WindowManager.LayoutParams(
-                                                    400, 150,
+                                                    640, 480,
                                                     WindowManager.LayoutParams.TYPE_PHONE,
                                                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                                                     PixelFormat.TRANSLUCENT );
@@ -42,6 +53,7 @@ public class FloatingWindow extends Service{
         wlparams.y = 0;
         wlparams.gravity = Gravity.CENTER;
 
+        ll.addView(btnStop);
         wm.addView(ll, wlparams);
 
         ll.setOnTouchListener(new View.OnTouchListener() {
@@ -65,6 +77,14 @@ public class FloatingWindow extends Service{
                     break;
                 }
                 return false;
+            }
+        });
+
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wm.removeView(ll);
+                stopSelf();
             }
         });
     }
