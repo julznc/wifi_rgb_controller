@@ -35,13 +35,13 @@ public class FloatingWindow extends Service{
         ViewGroup.LayoutParams blParams = new ViewGroup.LayoutParams(
                                                     ViewGroup.LayoutParams.WRAP_CONTENT,
                                                     ViewGroup.LayoutParams.WRAP_CONTENT );
-        btnStop.setText("Stop");
+        btnStop.setText("Exit");
         btnStop.setLayoutParams(blParams);
 
         RelativeLayout.LayoutParams llParams = new RelativeLayout.LayoutParams(
                                                         RelativeLayout.LayoutParams.MATCH_PARENT,
                                                         RelativeLayout.LayoutParams.MATCH_PARENT);
-        layout.setBackgroundColor(Color.argb(64, 152, 255, 152));
+        layout.setBackgroundColor(Color.argb(96, 152, 255, 152));
         layout.setLayoutParams(llParams);
 
         final WindowManager.LayoutParams wlparams = new WindowManager.LayoutParams(
