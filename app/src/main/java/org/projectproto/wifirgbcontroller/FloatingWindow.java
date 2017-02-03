@@ -11,12 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class FloatingWindow extends Service{
 
     private WindowManager wm;
-    private LinearLayout ll;
+    private RelativeLayout layout;
     private Button btnStop;
 
     @Override
@@ -29,7 +29,7 @@ public class FloatingWindow extends Service{
         super.onCreate();
 
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        ll = new LinearLayout(this);
+        layout = new RelativeLayout(this);
         btnStop = new Button(this);
 
         ViewGroup.LayoutParams blParams = new ViewGroup.LayoutParams(
@@ -38,11 +38,11 @@ public class FloatingWindow extends Service{
         btnStop.setText("Stop");
         btnStop.setLayoutParams(blParams);
 
-        LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(
-                                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                                     LinearLayout.LayoutParams.MATCH_PARENT);
-        ll.setBackgroundColor(Color.argb(64, 152, 255, 152));
-        ll.setLayoutParams(llParams);
+        RelativeLayout.LayoutParams llParams = new RelativeLayout.LayoutParams(
+                                                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                                                        RelativeLayout.LayoutParams.MATCH_PARENT);
+        layout.setBackgroundColor(Color.argb(64, 152, 255, 152));
+        layout.setLayoutParams(llParams);
 
         final WindowManager.LayoutParams wlparams = new WindowManager.LayoutParams(
                                                     640, 480,
@@ -53,10 +53,10 @@ public class FloatingWindow extends Service{
         wlparams.y = 0;
         wlparams.gravity = Gravity.CENTER;
 
-        ll.addView(btnStop);
-        wm.addView(ll, wlparams);
+        layout.addView(btnStop);
+        wm.addView(layout, wlparams);
 
-        ll.setOnTouchListener(new View.OnTouchListener() {
+        layout.setOnTouchListener(new View.OnTouchListener() {
             private WindowManager.LayoutParams nextparams = wlparams;
             int x, y;
             float touchedX, touchedY;
@@ -73,7 +73,7 @@ public class FloatingWindow extends Service{
                     nextparams.x = (int) (x + event.getRawX() - touchedX);
                     nextparams.y = (int) (y + event.getRawY() - touchedY);
 
-                    wm.updateViewLayout(ll, nextparams);
+                    wm.updateViewLayout(layout, nextparams);
                     break;
                 }
                 return false;
@@ -83,7 +83,7 @@ public class FloatingWindow extends Service{
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wm.removeView(ll);
+                wm.removeView(layout);
                 stopSelf();
             }
         });
