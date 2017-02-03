@@ -4,7 +4,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.os.IBinder;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,17 +40,22 @@ public class FloatingWindow extends Service{
         btnStop.setText("Exit");
         btnStop.setLayoutParams(blParams);
 
-        RelativeLayout.LayoutParams llParams = new RelativeLayout.LayoutParams(
+        RelativeLayout.LayoutParams layoutParamsParams = new RelativeLayout.LayoutParams(
                                                         RelativeLayout.LayoutParams.MATCH_PARENT,
                                                         RelativeLayout.LayoutParams.MATCH_PARENT);
         layout.setBackgroundColor(Color.argb(96, 152, 255, 152));
-        layout.setLayoutParams(llParams);
+        layout.setLayoutParams(layoutParamsParams);
 
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
         final WindowManager.LayoutParams wlparams = new WindowManager.LayoutParams(
-                                                    640, 480,
+                                                    (size.x * 7) / 10 /* width */,
+                                                    (size.y * 3) / 10 /* height */,
                                                     WindowManager.LayoutParams.TYPE_PHONE,
                                                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                                                     PixelFormat.TRANSLUCENT );
+
         wlparams.x = 0;
         wlparams.y = 0;
         wlparams.gravity = Gravity.CENTER;

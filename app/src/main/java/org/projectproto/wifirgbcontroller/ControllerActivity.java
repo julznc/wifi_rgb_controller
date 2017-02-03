@@ -6,7 +6,6 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
 
 public class ControllerActivity extends AppCompatActivity {
 
