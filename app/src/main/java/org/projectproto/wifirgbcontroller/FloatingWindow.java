@@ -15,11 +15,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class FloatingWindow extends Service{
 
     private WindowManager wm;
     private RelativeLayout layout;
+
     private Button btnExit;
     private EditText txtInput;
     private Button btnSetText;
@@ -36,12 +38,16 @@ public class FloatingWindow extends Service{
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        layout = (RelativeLayout) inflater.inflate(R.layout.controller,null);
+        layout = (RelativeLayout) inflater.inflate(R.layout.controller, null, false);
         layout.setBackgroundColor(Color.argb(96, 152, 255, 152));
 
         btnExit = (Button) layout.findViewById(R.id.btnExit);
+
         txtInput = (EditText) layout.findViewById(R.id.editIntput);
         btnSetText = (Button) layout.findViewById(R.id.btnSetText);
+
+        btnExit.setBackgroundColor(Color.argb(128, 255, 218, 185));
+        btnSetText.setBackgroundColor(Color.argb(128, 0, 255, 255));
 
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
@@ -89,6 +95,13 @@ public class FloatingWindow extends Service{
             public void onClick(View v) {
                 wm.removeView(layout);
                 stopSelf();
+            }
+        });
+
+        btnSetText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), txtInput.getText(), Toast.LENGTH_SHORT).show();
             }
         });
     }
