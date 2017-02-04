@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.view.Display;
 import android.view.Gravity;
@@ -17,14 +18,30 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
+
 public class FloatingWindow extends Service{
 
     private WindowManager wm;
     private RelativeLayout layout;
 
     private Button btnExit;
-    private EditText txtInput;
     private Button btnSetText;
+    private EditText txtIPaddr;
+    private EditText txtInput;
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -41,11 +58,13 @@ public class FloatingWindow extends Service{
         layout = (RelativeLayout) inflater.inflate(R.layout.controller, null, false);
         layout.setBackgroundColor(Color.argb(96, 152, 255, 152));
 
+        txtIPaddr = (EditText) layout.findViewById(R.id.editIPaddr);
         btnExit = (Button) layout.findViewById(R.id.btnExit);
 
         txtInput = (EditText) layout.findViewById(R.id.editIntput);
         btnSetText = (Button) layout.findViewById(R.id.btnSetText);
 
+        txtIPaddr.setText("192.168.0.172");
         btnExit.setBackgroundColor(Color.argb(128, 255, 218, 185));
         btnSetText.setBackgroundColor(Color.argb(128, 0, 255, 255));
 
@@ -101,8 +120,88 @@ public class FloatingWindow extends Service{
         btnSetText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), txtInput.getText(), Toast.LENGTH_SHORT).show();
+                String ip = txtIPaddr.getText().toString();
+                httpPost("http://" + ip + "/text");
             }
         });
+    }
+
+    private String httpPost(String reqUrl) {
+        class PostTask extends AsyncTask<String, String, String>{
+
+            @Override
+            protected String doInBackground(String... params) {
+                String urlString = params[0];
+
+                URL url;
+
+                HashMap<String, String> parameters = new HashMap<>();
+                parameters.put("text", "android");
+                parameters.put("color", "0xaabbcc");
+
+                String response = "";
+
+                try {
+                    url = new URL(urlString);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setReadTimeout(3*1000);
+                    conn.setConnectTimeout(3*1000);
+                    conn.setRequestMethod("POST");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+
+                    OutputStream os = conn.getOutputStream();
+
+                    BufferedWriter writer = new BufferedWriter(
+                            new OutputStreamWriter(os, "UTF-8"));
+                    writer.write(getPostData(parameters));
+                    writer.flush();
+                    writer.close();
+
+                    int responseCode = conn.getResponseCode();
+                    if (HttpsURLConnection.HTTP_OK == responseCode) {
+                        String line;
+                        BufferedReader br = new BufferedReader(
+                                new InputStreamReader(conn.getInputStream()));
+                        while (null !=(line=br.readLine())) {
+                            response+=line;
+                        }
+                    } else {
+                        response="";
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return response;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                Toast.makeText(getApplicationContext(), "done PostTask: " + result, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        PostTask task = new PostTask();
+        task.execute(reqUrl);
+
+        return "";
+    }
+
+    private String getPostData(HashMap<String, String> params) throws UnsupportedEncodingException {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            if (first) {
+                first = false;
+            } else {
+                result.append("&");
+            }
+            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+        }
+        return result.toString();
     }
 }
