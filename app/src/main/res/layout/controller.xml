@@ -3,20 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnExit"
-        android:text="X"
-        android:layout_width="40dp"
-        android:layout_height="36dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        style="?android:attr/borderlessButtonStyle" />
+    <LinearLayout
+        android:id="@+id/layoutTop"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true">
+        <EditText
+            android:id="@+id/editIPaddr"
+            android:hint="IP address"
+            android:inputType="number|numberDecimal"
+            android:digits="0123456789."
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1">
+        </EditText>
+        <Button
+            android:id="@+id/btnExit"
+            android:text="X"
+            android:layout_width="40dp"
+            android:layout_height="36dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            style="?android:attr/borderlessButtonStyle">
+        </Button>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnExit"
+        android:layout_below="@+id/layoutTop"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
         <EditText
@@ -28,7 +46,6 @@
         </EditText>
         <Button
             android:id="@+id/btnSetText"
-            android:layout_below="@+id/btnExit"
             android:text="Set"
             android:layout_width="64dp"
             android:layout_height="wrap_content">
