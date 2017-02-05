@@ -121,23 +121,31 @@ public class FloatingWindow extends Service{
             @Override
             public void onClick(View v) {
                 String ip = txtIPaddr.getText().toString();
-                httpPost("http://" + ip + "/text");
+
+                HashMap<String, String> parameters = new HashMap<>();
+                parameters.put("text", txtInput.getText().toString());
+                parameters.put("color", "0xaabbcc");
+
+                httpPost("http://" + ip + "/text", parameters);
             }
         });
     }
 
-    private String httpPost(String reqUrl) {
+    private String httpPost(String reqUrl, HashMap<String, String> parameters) {
         class PostTask extends AsyncTask<String, String, String>{
+
+            private HashMap<String, String> _params;
+
+            public PostTask(HashMap<String, String> postParams) {
+                super();
+                _params = postParams;
+            }
 
             @Override
             protected String doInBackground(String... params) {
                 String urlString = params[0];
 
                 URL url;
-
-                HashMap<String, String> parameters = new HashMap<>();
-                parameters.put("text", "android");
-                parameters.put("color", "0xaabbcc");
 
                 String response = "";
 
@@ -154,7 +162,7 @@ public class FloatingWindow extends Service{
 
                     BufferedWriter writer = new BufferedWriter(
                             new OutputStreamWriter(os, "UTF-8"));
-                    writer.write(getPostData(parameters));
+                    writer.write(getPostData(_params));
                     writer.flush();
                     writer.close();
 
@@ -179,29 +187,29 @@ public class FloatingWindow extends Service{
 
             @Override
             protected void onPostExecute(String result) {
-                Toast.makeText(getApplicationContext(), "done PostTask: " + result, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "done PostTask", Toast.LENGTH_SHORT).show();
+            }
+
+            private String getPostData(HashMap<String, String> params) throws UnsupportedEncodingException {
+                StringBuilder result = new StringBuilder();
+                boolean first = true;
+                for (Map.Entry<String, String> entry : params.entrySet()) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        result.append("&");
+                    }
+                    result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+                    result.append("=");
+                    result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+                }
+                return result.toString();
             }
         }
 
-        PostTask task = new PostTask();
+        PostTask task = new PostTask(parameters);
         task.execute(reqUrl);
 
         return "";
-    }
-
-    private String getPostData(HashMap<String, String> params) throws UnsupportedEncodingException {
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            if (first) {
-                first = false;
-            } else {
-                result.append("&");
-            }
-            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-        }
-        return result.toString();
     }
 }
