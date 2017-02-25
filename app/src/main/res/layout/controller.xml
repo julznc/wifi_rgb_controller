@@ -8,7 +8,6 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true">
         <EditText
             android:id="@+id/editIPaddr"
@@ -16,7 +15,7 @@
             android:inputType="number|numberDecimal"
             android:digits="0123456789."
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_weight="1">
         </EditText>
         <EditText
@@ -28,10 +27,8 @@
         <Button
             android:id="@+id/btnExit"
             android:text="X"
-            android:layout_width="40dp"
+            android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
             style="?android:attr/borderlessButtonStyle">
         </Button>
     </LinearLayout>
@@ -48,29 +45,32 @@
             android:id="@+id/editIntput"
             android:hint="message"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_weight="1">
         </EditText>
         <Button
             android:id="@+id/btnSetText"
             android:text="Set"
-            android:layout_width="64dp"
-            android:layout_height="wrap_content">
+            android:layout_width="56dp"
+            android:layout_height="36dp">
         </Button>
     </LinearLayout>
 
     <org.projectproto.wifirgbcontroller.RadioTableLayout
+        android:id="@+id/layoutRadio"
         android:layout_below="@+id/layoutText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TableRow>
             <RadioButton
+                android:id="@+id/rbtnSpeed"
                 android:text="Speed"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
             <RadioButton
+                android:id="@+id/rbtnRandom"
                 android:text="Random"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -79,11 +79,13 @@
 
         <TableRow>
             <RadioButton
+                android:id="@+id/rbtnThanks"
                 android:text="THANKS"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
             <RadioButton
+                android:id="@+id/rbtnStop"
                 android:text="STOP"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -92,11 +94,13 @@
 
         <TableRow>
             <RadioButton
+                android:id="@+id/rbtnBaby"
                 android:text="BABT ON CAR"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
             <RadioButton
+                android:id="@+id/rbtnPreggy"
                 android:text="PREGGY ON CAR"
                 android:layout_weight="1"
                 android:layout_width="0dp"
