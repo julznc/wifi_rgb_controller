@@ -37,6 +37,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutText"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -57,5 +58,50 @@
             android:layout_height="wrap_content">
         </Button>
     </LinearLayout>
+
+    <org.projectproto.wifirgbcontroller.RadioTableLayout
+        android:layout_below="@+id/layoutText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+            <RadioButton
+                android:text="Speed"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:text="Random"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow>
+            <RadioButton
+                android:text="THANKS"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:text="STOP"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow>
+            <RadioButton
+                android:text="BABT ON CAR"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:text="PREGGY ON CAR"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </TableRow>
+    </org.projectproto.wifirgbcontroller.RadioTableLayout>
 
 </RelativeLayout>
