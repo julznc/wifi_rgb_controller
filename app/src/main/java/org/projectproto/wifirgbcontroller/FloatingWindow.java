@@ -7,6 +7,9 @@ import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,6 +43,7 @@ public class FloatingWindow extends Service{
     private Button btnExit;
     private Button btnSetText;
     private EditText txtIPaddr;
+    private EditText txtBrightness;
     private EditText txtInput;
 
 
@@ -59,14 +63,39 @@ public class FloatingWindow extends Service{
         layout.setBackgroundColor(Color.argb(96, 152, 255, 152));
 
         txtIPaddr = (EditText) layout.findViewById(R.id.editIPaddr);
+        txtBrightness = (EditText) layout.findViewById(R.id.editBrightness);
         btnExit = (Button) layout.findViewById(R.id.btnExit);
 
         txtInput = (EditText) layout.findViewById(R.id.editIntput);
         btnSetText = (Button) layout.findViewById(R.id.btnSetText);
 
         txtIPaddr.setText("192.168.0.172");
+        txtBrightness.setText("8");
         btnExit.setBackgroundColor(Color.argb(128, 255, 218, 185));
         btnSetText.setBackgroundColor(Color.argb(128, 0, 255, 255));
+
+        txtBrightness.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if ((s.length() > 0) && (Integer.parseInt(s.toString()) > 255)) {
+                    txtBrightness.setText("255");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if ((s.length() > 0)) {
+                    String ip = txtIPaddr.getText().toString();
+                    HashMap<String, String> parameters = new HashMap<>();
+                    parameters.put("brightness", txtBrightness.getText().toString());
+
+                    httpPost("http://" + ip + "/brightness", parameters);
+                }
+            }
+        });
 
         Display display = wm.getDefaultDisplay();
         Point size = new Point();

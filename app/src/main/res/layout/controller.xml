@@ -19,6 +19,12 @@
             android:layout_width="fill_parent"
             android:layout_weight="1">
         </EditText>
+        <EditText
+            android:id="@+id/editBrightness"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="3"/>
         <Button
             android:id="@+id/btnExit"
             android:text="X"
