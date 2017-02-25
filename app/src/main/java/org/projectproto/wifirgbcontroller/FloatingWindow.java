@@ -103,24 +103,31 @@ public class FloatingWindow extends Service{
         layoutRadio.setCallback(new RadioTableLayout.RadioBtnCallback() {
             @Override
             public void select(int id) {
+                String ip = txtIPaddr.getText().toString();
+                HashMap<String, String> parameters = new HashMap<>();
                 switch (id) {
                     case R.id.rbtnSpeed:
-                        Log.d("yus", "rbtnSpeed");
+                        Log.d("yus", "to do: speed-display mode");
                         break;
                     case R.id.rbtnRandom:
-                        Log.d("yus", "rbtnRandom");
+                        parameters.put("animate", "0");
+                        httpPost("http://" + ip + "/animate", parameters);
                         break;
                     case R.id.rbtnThanks:
-                        Log.d("yus", "rbtnThanks");
+                        parameters.put("bitmap", "0");
+                        httpPost("http://" + ip + "/bitmap", parameters);
                         break;
                     case R.id.rbtnStop:
-                        Log.d("yus", "rbtnStop");
+                        parameters.put("bitmap", "1");
+                        httpPost("http://" + ip + "/bitmap", parameters);
                         break;
                     case R.id.rbtnBaby:
-                        Log.d("yus", "rbtnBaby");
+                        parameters.put("bitmap", "2");
+                        httpPost("http://" + ip + "/bitmap", parameters);
                         break;
                     case R.id.rbtnPreggy:
-                        Log.d("yus", "rbtnPreggy");
+                        parameters.put("bitmap", "3");
+                        httpPost("http://" + ip + "/bitmap", parameters);
                         break;
                 }
             }
