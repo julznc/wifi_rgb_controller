@@ -11,12 +11,22 @@ import android.widget.TableRow;
 
 public class RadioTableLayout extends TableLayout implements OnClickListener{
 
+    interface RadioBtnCallback {
+        void select(int id);
+    }
+
     private RadioButton activeRadioButton = null;
+    private RadioBtnCallback callback = null;
+
     public RadioTableLayout(Context context) {
         super(context);
     }
     public RadioTableLayout(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+    }
+
+    public void setCallback(RadioBtnCallback cb ) {
+        callback = cb;
     }
 
     @Override
@@ -27,6 +37,9 @@ public class RadioTableLayout extends TableLayout implements OnClickListener{
         }
         rb.setChecked(true);
         activeRadioButton = rb;
+        if (null != callback) {
+            callback.select(rb.getId());
+        }
     }
 
     @Override

@@ -46,6 +46,7 @@ public class FloatingWindow extends Service{
     private EditText txtBrightness;
     private EditText txtInput;
 
+    private RadioTableLayout layoutRadio;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -68,6 +69,8 @@ public class FloatingWindow extends Service{
 
         txtInput = (EditText) layout.findViewById(R.id.editIntput);
         btnSetText = (Button) layout.findViewById(R.id.btnSetText);
+
+        layoutRadio = (RadioTableLayout) layout.findViewById(R.id.layoutRadio);
 
         txtIPaddr.setText("192.168.0.172");
         txtBrightness.setText("8");
@@ -93,6 +96,32 @@ public class FloatingWindow extends Service{
                     parameters.put("brightness", txtBrightness.getText().toString());
 
                     httpPost("http://" + ip + "/brightness", parameters);
+                }
+            }
+        });
+
+        layoutRadio.setCallback(new RadioTableLayout.RadioBtnCallback() {
+            @Override
+            public void select(int id) {
+                switch (id) {
+                    case R.id.rbtnSpeed:
+                        Log.d("yus", "rbtnSpeed");
+                        break;
+                    case R.id.rbtnRandom:
+                        Log.d("yus", "rbtnRandom");
+                        break;
+                    case R.id.rbtnThanks:
+                        Log.d("yus", "rbtnThanks");
+                        break;
+                    case R.id.rbtnStop:
+                        Log.d("yus", "rbtnStop");
+                        break;
+                    case R.id.rbtnBaby:
+                        Log.d("yus", "rbtnBaby");
+                        break;
+                    case R.id.rbtnPreggy:
+                        Log.d("yus", "rbtnPreggy");
+                        break;
                 }
             }
         });
